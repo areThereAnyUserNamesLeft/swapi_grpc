@@ -3,6 +3,7 @@ package mongo
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -59,4 +60,12 @@ func contains(i int, arr []int32) bool {
 		}
 	}
 	return false
+}
+
+func matches(text, search string) bool {
+	re, err := regexp.Compile("(?i)" + search)
+	if err != nil {
+		return false
+	}
+	return re.FindStringIndex(text) != nil
 }

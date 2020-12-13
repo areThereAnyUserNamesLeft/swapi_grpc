@@ -67,5 +67,14 @@ func (s *SwapiServiceServer) RequestFilms(ctx context.Context, in *films.FilmReq
 }
 
 func (s *SwapiServiceServer) SearchFilms(ctx context.Context, in *films.SearchRequest) (*films.FilmsResponse, error) {
-	return s.GRPC.SearchFilms(ctx, in)
+	sr := in.GetSearchText()
+	ff, err := s.DB.SearchFilms(ctx, sr)
+	if err != nil {
+		return &films.FilmsResponse{
+			Films: ff,
+		}, err
+	}
+	return &films.FilmsResponse{
+		Films: ff,
+	}, nil
 }

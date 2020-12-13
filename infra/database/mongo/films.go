@@ -57,6 +57,36 @@ func (c *Connection) GetFilms(ctx context.Context, pk []int32) ([]*films.Film, e
 	return ff, err
 }
 
+// GetFilms finds a film by index and populates a var it is passed.
+func (c *Connection) SearchFilms(ctx context.Context, searchText string) ([]*films.Film, error) {
+	ff := []*films.Film{}
+
+	d := bson.D{{}}
+
+	cur, err := c.DB.Collection("films").Find(ctx, d)
+	if err != nil {
+		return ff, err
+	}
+
+	sf := structs.Films{}
+	if err = cur.All(ctx, &sf); err != nil {
+		return ff, err
+	}
+
+	for i := range sf {
+		if matches(sf[i].Fields.Title, searchText) {
+			var f films.Film
+			ff = append(ff, &f)
+			err = hydrateFilm(i, sf, &f)
+			if err != nil {
+				return ff, err
+			}
+		}
+	}
+
+	return ff, err
+}
+
 func hydrateFilm(index int, sf structs.Films, f *films.Film) error {
 	edited, err := ptypes.TimestampProto(sf[index].Fields.Edited)
 	if err != nil {
