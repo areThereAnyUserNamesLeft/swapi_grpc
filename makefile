@@ -35,7 +35,7 @@ download-protos: check-protoc proto-src-remove
 	$(call clone_uw_proto,swapi_contract)
 
 generate: 
-	for V in films people planets species starships vehicles ; do \
+	for V in films people planets species starships transport vehicles ; do \
 		mkdir -p generated/$$V/ ; \
 		protoc --plugin=protoc-gen-go=$(HOME)/go/bin/protoc-gen-go \
 		-I ./protos/github.com/areThereAnyUserNamesLeft/swapi_contract/ \
