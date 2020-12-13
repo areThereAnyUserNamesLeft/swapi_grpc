@@ -33,3 +33,12 @@ endef
 download-protos: check-protoc proto-src-remove
 	@-mkdir -p $(proto_src_root)
 	$(call clone_uw_proto,swapi_contract)
+
+generate: 
+	for V in films people planets species starships vehicles ; do \
+		mkdir -p generated/$$V/ ; \
+		protoc --plugin=protoc-gen-go=$(HOME)/go/bin/protoc-gen-go \
+		-I ./protos/github.com/areThereAnyUserNamesLeft/swapi_contract/ \
+		--go_out=plugins=grpc:./generated/$$V/  $$V.proto  ; \
+	done
+
