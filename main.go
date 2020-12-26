@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"grpc-swapi/generated/films"
 	"grpc-swapi/generated/people"
+	"grpc-swapi/generated/planets"
 	"grpc-swapi/infra/database/mongo"
 	delivery "grpc-swapi/infra/delivery/grpc"
 	"log"
@@ -29,6 +30,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	films.RegisterFilmsServiceServer(grpcServer, &app)
 	people.RegisterPeopleServiceServer(grpcServer, &app)
+	planets.RegisterPlanetsServiceServer(grpcServer, &app)
 	fmt.Println("grpc listening on 8090")
 	grpcServer.Serve(lis)
 }

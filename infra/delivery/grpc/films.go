@@ -22,6 +22,7 @@ func (s *SwapiServer) RequestFilm(ctx context.Context, in *films.FilmRequest) (*
 	}, nil
 }
 
+// RequestFilms fufils interface from pb.
 func (s *SwapiServer) RequestFilms(ctx context.Context, in *films.FilmRequest) (*films.FilmsResponse, error) {
 	pk := in.GetPK()
 	ff, err := s.DB.GetFilms(ctx, pk)
@@ -35,6 +36,7 @@ func (s *SwapiServer) RequestFilms(ctx context.Context, in *films.FilmRequest) (
 	}, nil
 }
 
+// SearchFilms fufils interface from pb.
 func (s *SwapiServer) SearchFilms(ctx context.Context, in *films.SearchRequest) (*films.FilmsResponse, error) {
 	sr := in.GetSearchText()
 	ff, err := s.DB.SearchFilms(ctx, sr)
